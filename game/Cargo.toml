@@ -1,0 +1,8 @@
+[package]
+name = "game"
+version = "0.1.0"
+authors = ["Renato Matsuda Vassão Dias <renato.dias@cubos.io>"]
+edition = "2018"
+
+[dependencies]
+deck = { path = "../deck" }
