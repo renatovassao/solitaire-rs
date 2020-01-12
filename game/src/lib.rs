@@ -54,6 +54,23 @@ impl Foundation {
             stack: Vec::with_capacity(13),
         }
     }
+
+    pub fn push(&mut self, card: Card) -> bool {
+        if card.get_suit() != self.suit {
+            return false;
+        }
+
+        if self.stack.len() == 0 && card.get_rank() != Rank::Ace {
+            return false;
+        }
+
+        if self.stack.last().unwrap().get_rank() as i8 + 1 != card.get_rank() as i8 {
+            return false;
+        }
+
+        self.stack.push(card);
+        return true;
+    }
 }
 
 #[derive(Debug)]
