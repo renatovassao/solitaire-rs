@@ -19,7 +19,7 @@ pub enum Rank {
     King,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Copy, Debug, Clone, PartialEq)]
 pub enum Suit {
     Clubs,
     Diamonds,
@@ -59,6 +59,10 @@ impl Card {
 
     pub fn get_suit(&self) -> Suit {
         self.suit.clone()
+    }
+
+    pub fn is_open(&self) -> bool {
+        self.open
     }
 }
 
