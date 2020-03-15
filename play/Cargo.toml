@@ -5,4 +5,5 @@ authors = ["Renato Matsuda Vassão Dias <renato.dias@cubos.io>"]
 edition = "2018"
 
 [dependencies]
+deck = { path = "../deck" }
 game = { path = "../game" }
