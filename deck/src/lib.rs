@@ -68,7 +68,11 @@ impl Card {
 
 impl fmt::Display for Card {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.unicode)
+        if self.open {
+            write!(f, "{}", self.unicode)
+        } else {
+            write!(f, "{}", CARD_BACK)
+        }
     }
 }
 
