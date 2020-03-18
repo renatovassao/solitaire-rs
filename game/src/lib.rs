@@ -451,3 +451,132 @@ impl Game {
         false
     }
 }
+
+impl fmt::Display for Game {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        // clubs
+        write!(f, " ").unwrap();
+        if let Some(last_club) = self.clubs_foundation.last() {
+            last_club.fmt(f).unwrap();
+        } else {
+            write!(f, "{}", '\u{2663}').unwrap();
+        }
+        write!(f, " ").unwrap();
+
+        // diamonds
+        write!(f, " ").unwrap();
+        if let Some(last_diamond) = self.diamonds_foundation.last() {
+            last_diamond.fmt(f).unwrap();
+        } else {
+            write!(f, "{}", '\u{2666}').unwrap();
+        }
+        write!(f, " ").unwrap();
+
+        // hearts
+        write!(f, " ").unwrap();
+        if let Some(last_heart) = self.hearts_foundation.last() {
+            last_heart.fmt(f).unwrap();
+        } else {
+            write!(f, "{}", '\u{2665}').unwrap();
+        }
+        write!(f, " ").unwrap();
+
+        // spades
+        write!(f, " ").unwrap();
+        if let Some(last_spade) = self.spades_foundation.last() {
+            last_spade.fmt(f).unwrap();
+        } else {
+            write!(f, "{}", '\u{2660}').unwrap();
+        }
+        write!(f, " ").unwrap();
+
+        // waste
+        for i in (0..3).rev() {
+            write!(f, " ").unwrap();
+            if self.waste.len() <= i {
+                write!(f, " ").unwrap();
+                continue;
+            }
+            if let Some(waste_card) = self.waste.get(self.waste.len() - i - 1) {
+                waste_card.fmt(f).unwrap();
+            } else {
+                write!(f, " ").unwrap();
+            }
+        }
+
+        write!(f, " ").unwrap();
+
+        // stock
+        if let Some(stock_card) = self.stock.last() {
+            stock_card.fmt(f).unwrap();
+        } else {
+            write!(f, "{}", '\u{1F0EA}').unwrap();
+        }
+
+        write!(f, " \n\n").unwrap();
+
+        // tableaus
+        for i in 0..14 {
+            if self.tableau_1.len() < i && self.tableau_2.len() < i && self.tableau_3.len() < i && self.tableau_4.len() < i && self.tableau_5.len() < i && self.tableau_6.len() < i && self.tableau_6.len() < i {
+                break;
+            }
+            write!(f, " ").unwrap();
+            if let Some(tableau_card) = self.tableau_1.get(i) {
+                tableau_card.fmt(f).unwrap();
+            } else {
+                write!(f, " ").unwrap();
+            }
+            write!(f, " ").unwrap();
+
+            write!(f, " ").unwrap();
+            if let Some(tableau_card) = self.tableau_2.get(i) {
+                tableau_card.fmt(f).unwrap();
+            } else {
+                write!(f, " ").unwrap();
+            }
+            write!(f, " ").unwrap();
+
+            write!(f, " ").unwrap();
+            if let Some(tableau_card) = self.tableau_3.get(i) {
+                tableau_card.fmt(f).unwrap();
+            } else {
+                write!(f, " ").unwrap();
+            }
+            write!(f, " ").unwrap();
+
+            write!(f, " ").unwrap();
+            if let Some(tableau_card) = self.tableau_4.get(i) {
+                tableau_card.fmt(f).unwrap();
+            } else {
+                write!(f, " ").unwrap();
+            }
+            write!(f, " ").unwrap();
+
+            write!(f, " ").unwrap();
+            if let Some(tableau_card) = self.tableau_5.get(i) {
+                tableau_card.fmt(f).unwrap();
+            } else {
+                write!(f, " ").unwrap();
+            }
+            write!(f, " ").unwrap();
+
+            write!(f, " ").unwrap();
+            if let Some(tableau_card) = self.tableau_6.get(i) {
+                tableau_card.fmt(f).unwrap();
+            } else {
+                write!(f, " ").unwrap();
+            }
+            write!(f, " ").unwrap();
+
+            write!(f, " ").unwrap();
+            if let Some(tableau_card) = self.tableau_7.get(i) {
+                tableau_card.fmt(f).unwrap();
+            } else {
+                write!(f, " ").unwrap();
+            }
+            write!(f, " ").unwrap();
+            write!(f, "\n").unwrap();
+        }
+        write!(f, "\n")
+    }
+}
