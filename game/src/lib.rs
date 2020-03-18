@@ -1,3 +1,4 @@
+use std::fmt;
 use deck::{Suit, Rank, Card, Deck};
 
 const MAX_TABLEAU_SIZE: usize = 13;
@@ -6,6 +7,8 @@ trait Pile<T> {
     fn push(&mut self, t: T) -> Option<T>;
     fn pop(&mut self) -> Option<T>;
     fn len(&self) -> usize;
+    fn last(&self) -> Option<&T>;
+    fn get(&self, i: usize) -> Option<&T>;
 }
 
 #[derive(Debug)]
@@ -64,6 +67,14 @@ impl Pile<Card> for Tableau {
     fn len(&self) -> usize {
         self.stack.len()
     }
+
+    fn last(&self) -> Option<&Card> {
+        self.stack.last()
+    }
+
+    fn get(&self, i: usize) -> Option<&Card> {
+        self.stack.get(i)
+    }
 }
 
 #[derive(Debug)]
@@ -110,6 +121,14 @@ impl Pile<Card> for Foundation {
     fn len(&self) -> usize {
         self.stack.len()
     }
+
+    fn last(&self) -> Option<&Card> {
+        self.stack.last()
+    }
+
+    fn get(&self, i: usize) -> Option<&Card> {
+        self.stack.get(i)
+    }
 }
 
 #[derive(Debug)]
@@ -138,6 +157,14 @@ impl Pile<Card> for Waste {
         card.open();
         self.stack.push(card);
         return None;
+    }
+
+    fn last(&self) -> Option<&Card> {
+        self.stack.last()
+    }
+
+    fn get(&self, i: usize) -> Option<&Card> {
+        self.stack.get(i)
     }
 }
 
@@ -168,6 +195,14 @@ impl Pile<Card> for Stock {
         card.close();
         self.stack.push(card);
         return None;
+    }
+
+    fn last(&self) -> Option<&Card> {
+        self.stack.last()
+    }
+
+    fn get(&self, i: usize) -> Option<&Card> {
+        self.stack.get(i)
     }
 }
 
