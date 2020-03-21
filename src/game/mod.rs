@@ -22,6 +22,7 @@ trait Pile<T> {
 
 const MAX_TABLEAU_SIZE: usize = 13;
 
+#[derive(Debug)]
 pub enum DealSize {
     One,
     Three,
@@ -87,7 +88,7 @@ impl Game {
         }
     }
 
-    fn pop_from_foundation(&mut self, foundation_suit: &Suit) -> Option<Card> {
+    fn pop_from_foundation(&mut self, foundation_suit: Suit) -> Option<Card> {
         match foundation_suit {
             Suit::Clubs => self.clubs_foundation.pop(),
             Suit::Diamonds => self.diamonds_foundation.pop(),
@@ -146,7 +147,7 @@ impl Game {
 
     // move methods
 
-    fn move_to_foundation(&mut self, foundation_suit: &Suit, card: Card) -> Option<Card> {
+    fn move_to_foundation(&mut self, foundation_suit: Suit, card: Card) -> Option<Card> {
         match foundation_suit {
             Suit::Clubs => self.clubs_foundation.push(card),
             Suit::Diamonds => self.diamonds_foundation.push(card),
@@ -214,7 +215,7 @@ impl Game {
         }
     }
 
-    pub fn waste_to_foundation(&mut self, foundation_suit: &Suit) -> bool {
+    pub fn waste_to_foundation(&mut self, foundation_suit: Suit) -> bool {
         if let Some(waste_card) = self.pop_from_waste() {
             if let Some(card) = self.move_to_foundation(foundation_suit, waste_card) {
                 self.move_to_waste(card);
@@ -240,7 +241,7 @@ impl Game {
         false
     }
 
-    pub fn tableau_to_foundation(&mut self, tableau_number: usize, foundation_suit: &Suit) -> bool {
+    pub fn tableau_to_foundation(&mut self, tableau_number: usize, foundation_suit: Suit) -> bool {
         if let Some(tableau_card) = self.pop_from_tableau(tableau_number) {
             if let Some(card) = self.move_to_foundation(foundation_suit, tableau_card) {
                 self.move_to_tableau(tableau_number, card);
@@ -287,7 +288,7 @@ impl Game {
         false
     }
 
-    pub fn foundation_to_tableau(&mut self, foundation_suit: &Suit, tableau_number: usize) -> bool {
+    pub fn foundation_to_tableau(&mut self, foundation_suit: Suit, tableau_number: usize) -> bool {
         if let Some(foundation_card) = self.pop_from_foundation(foundation_suit) {
             if let Some(card) = self.move_to_tableau(tableau_number, foundation_card) {
                 self.move_to_foundation(foundation_suit, card);
