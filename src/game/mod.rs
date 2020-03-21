@@ -1,7 +1,15 @@
 use std::fmt;
-use deck::{Suit, Rank, Card, Deck};
+use crate::deck::{Deck, Card, Suit};
 
-const MAX_TABLEAU_SIZE: usize = 13;
+mod tableau;
+mod foundation;
+mod waste;
+mod stock;
+
+use self::tableau::Tableau;
+use self::foundation::Foundation;
+use self::waste::Waste;
+use self::stock::Stock;
 
 trait Pile<T> {
     fn can_push(&self, t: &T) -> bool;
@@ -12,238 +20,13 @@ trait Pile<T> {
     fn get(&self, i: usize) -> Option<&T>;
 }
 
-#[derive(Debug)]
-struct Tableau {
-    stack: Vec<Card>
-}
+const MAX_TABLEAU_SIZE: usize = 13;
 
-impl Tableau {
-    pub fn new(stack: Vec<Card>) -> Tableau {
-        Tableau {
-            stack
-        }
-    }
-}
-
-impl Pile<Card> for Tableau {
-    fn can_push(&self, card: &Card) -> bool {
-        if !card.is_open() {
-            return false;
-        }
-
-        if let Some(last) = self.stack.last() {
-            if last.get_rank() as i8 - 1 != card.get_rank() as i8 {
-                return false;
-            }
-
-            if (last.get_suit() == Suit::Diamonds || last.get_suit() == Suit::Hearts) && (card.get_suit() != Suit::Clubs && card.get_suit() != Suit::Spades) {
-                return false;
-            }
-
-            if (last.get_suit() == Suit::Clubs || last.get_suit() == Suit::Spades) && (card.get_suit() != Suit::Diamonds && card.get_suit() != Suit::Hearts) {
-                return false;
-            }
-
-        } else if card.get_rank() != Rank::King {
-            return false;
-        };
-
-        true
-    }
-
-    fn push(&mut self, card: Card) -> Option<Card> {
-        if self.can_push(&card) {
-            self.stack.push(card);
-            None
-        } else {
-            Some(card)
-        }
-    }
-
-    fn pop(&mut self) -> Option<Card> {
-        if let Some(card) = self.stack.pop() {
-            if let Some(mut card_2) = self.stack.pop() {
-                card_2.open();
-                self.stack.push(card_2);
-            }
-            return Some(card);
-        }
-
-        None
-    }
-
-    fn len(&self) -> usize {
-        self.stack.len()
-    }
-
-    fn last(&self) -> Option<&Card> {
-        self.stack.last()
-    }
-
-    fn get(&self, i: usize) -> Option<&Card> {
-        self.stack.get(i)
-    }
-}
-
-#[derive(Debug)]
-struct Foundation {
-    stack: Vec<Card>,
-    suit: Suit,
-}
-
-impl Foundation {
-    pub fn new(suit: Suit) -> Foundation {
-        Foundation {
-            suit,
-            stack: Vec::with_capacity(MAX_TABLEAU_SIZE),
-        }
-    }
-}
-
-impl Pile<Card> for Foundation {
-    fn can_push(&self, card: &Card) -> bool {
-        if !card.is_open() {
-            return false;
-        }
-
-        if card.get_suit() != self.suit {
-            return false;
-        }
-
-        if let Some(last) = self.stack.last() {
-            if last.get_rank() as i8 + 1 != card.get_rank() as i8 {
-                return false;
-            }
-        } else if card.get_rank() != Rank::Ace {
-            return false;
-        };
-
-        true
-    }
-
-    fn push(&mut self, card: Card) -> Option<Card> {
-        if self.can_push(&card) {
-            self.stack.push(card);
-            None
-        } else {
-            Some(card)
-        }
-    }
-
-    fn pop(&mut self) -> Option<Card> {
-        self.stack.pop()
-    }
-
-    fn len(&self) -> usize {
-        self.stack.len()
-    }
-
-    fn last(&self) -> Option<&Card> {
-        self.stack.last()
-    }
-
-    fn get(&self, i: usize) -> Option<&Card> {
-        self.stack.get(i)
-    }
-}
-
-#[derive(Debug)]
-struct Waste {
-    stack: Vec<Card>
-}
-
-impl Waste {
-    pub fn new() -> Waste {
-        Waste {
-            stack: Vec::new()
-        }
-    }
-}
-
-impl Pile<Card> for Waste {
-    fn can_push(&self, card: &Card) -> bool {
-        card.is_open()
-    }
-
-    fn len(&self) -> usize {
-        self.stack.len()
-    }
-
-    fn pop(&mut self) -> Option<Card> {
-        self.stack.pop()
-    }
-
-    fn push(&mut self, card: Card) -> Option<Card> {
-        if self.can_push(&card) {
-            self.stack.push(card);
-            None
-        } else {
-            Some(card)
-        }
-    }
-
-    fn last(&self) -> Option<&Card> {
-        self.stack.last()
-    }
-
-    fn get(&self, i: usize) -> Option<&Card> {
-        self.stack.get(i)
-    }
-}
-
-
-#[derive(Debug)]
-struct Stock {
-    stack: Vec<Card>
-}
-
-impl Stock {
-    pub fn new(stack: Vec<Card>) -> Stock {
-        Stock {
-            stack
-        }
-    }
-}
-
-impl Pile<Card> for Stock {
-    fn can_push(&self, card: &Card) -> bool {
-        !card.is_open()
-    }
-
-    fn push(&mut self, card: Card) -> Option<Card> {
-        if self.can_push(&card) {
-            self.stack.push(card);
-            None
-        } else {
-            Some(card)
-        }
-    }
-
-    fn pop(&mut self) -> Option<Card> {
-        self.stack.pop()
-    }
-
-    fn len(&self) -> usize {
-        self.stack.len()
-    }
-
-    fn last(&self) -> Option<&Card> {
-        self.stack.last()
-    }
-
-    fn get(&self, i: usize) -> Option<&Card> {
-        self.stack.get(i)
-    }
-}
-
-#[derive(Copy, Clone, Debug)]
 pub enum DealSize {
-    One = 1,
-    Three = 3,
+    One,
+    Three,
 }
 
-
-#[derive(Debug)]
 pub struct Game {
     tableau_1: Tableau,
     tableau_2: Tableau,
@@ -304,7 +87,7 @@ impl Game {
         }
     }
 
-    fn pop_from_foundation(&mut self, foundation_suit: Suit) -> Option<Card> {
+    fn pop_from_foundation(&mut self, foundation_suit: &Suit) -> Option<Card> {
         match foundation_suit {
             Suit::Clubs => self.clubs_foundation.pop(),
             Suit::Diamonds => self.diamonds_foundation.pop(),
@@ -355,12 +138,15 @@ impl Game {
     }
 
     fn get_deal_size(&self) -> usize {
-        self.deal_size as usize
+        match self.deal_size {
+            DealSize::One => 1,
+            DealSize::Three => 3,
+        }
     }
 
     // move methods
 
-    fn move_to_foundation(&mut self, foundation_suit: Suit, card: Card) -> Option<Card> {
+    fn move_to_foundation(&mut self, foundation_suit: &Suit, card: Card) -> Option<Card> {
         match foundation_suit {
             Suit::Clubs => self.clubs_foundation.push(card),
             Suit::Diamonds => self.diamonds_foundation.push(card),
@@ -428,7 +214,7 @@ impl Game {
         }
     }
 
-    pub fn waste_to_foundation(&mut self, foundation_suit: Suit) -> bool {
+    pub fn waste_to_foundation(&mut self, foundation_suit: &Suit) -> bool {
         if let Some(waste_card) = self.pop_from_waste() {
             if let Some(card) = self.move_to_foundation(foundation_suit, waste_card) {
                 self.move_to_waste(card);
@@ -454,7 +240,7 @@ impl Game {
         false
     }
 
-    pub fn tableau_to_foundation(&mut self, tableau_number: usize, foundation_suit: Suit) -> bool {
+    pub fn tableau_to_foundation(&mut self, tableau_number: usize, foundation_suit: &Suit) -> bool {
         if let Some(tableau_card) = self.pop_from_tableau(tableau_number) {
             if let Some(card) = self.move_to_foundation(foundation_suit, tableau_card) {
                 self.move_to_tableau(tableau_number, card);
@@ -501,7 +287,7 @@ impl Game {
         false
     }
 
-    pub fn foundation_to_tableau(&mut self, foundation_suit: Suit, tableau_number: usize) -> bool {
+    pub fn foundation_to_tableau(&mut self, foundation_suit: &Suit, tableau_number: usize) -> bool {
         if let Some(foundation_card) = self.pop_from_foundation(foundation_suit) {
             if let Some(card) = self.move_to_tableau(tableau_number, foundation_card) {
                 self.move_to_foundation(foundation_suit, card);
