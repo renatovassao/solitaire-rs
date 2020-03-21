@@ -19,12 +19,23 @@ pub enum Rank {
     King,
 }
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Copy)]
 pub enum Suit {
     Clubs,
     Diamonds,
     Hearts,
     Spades,
+}
+
+impl fmt::Display for Suit {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Suit::Clubs => write!(f, "Clubs"),
+            Suit::Diamonds => write!(f, "Diamonds"),
+            Suit::Hearts => write!(f, "Hearts"),
+            Suit::Spades => write!(f, "Spades"),
+        }
+    }
 }
 
 pub struct Card {
