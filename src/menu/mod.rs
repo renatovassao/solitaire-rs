@@ -44,8 +44,8 @@ pub fn start() {
                         messages.push(String::from("m or move => moves cards"));
                         messages.push(String::from("h or help => display this help"));
                     },
-                    Command::Move(aaaa) => {
-                        match aaaa {
+                    Command::Move(spec) => {
+                        match spec {
                             MoveSpec::WasteToFoundation(suit) => {
                                 let success = game.waste_to_foundation(suit);
                                 if success {

@@ -22,7 +22,6 @@ trait Pile<T> {
 
 const MAX_TABLEAU_SIZE: usize = 13;
 
-#[derive(Debug)]
 pub enum DealSize {
     One,
     Three,

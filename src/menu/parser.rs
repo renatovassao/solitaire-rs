@@ -13,7 +13,7 @@ impl Command {
             "d" | "deal" => Ok(Command::Deal),
             "h" | "help" => Ok(Command::Help),
             "m" | "move" => match MoveSpec::read_and_parse() {
-                Ok(move_spec) => Ok(Command::Move(move_spec)),
+                Ok(spec) => Ok(Command::Move(spec)),
                 Err(message) => Err(message)
             },
             _ => Err(format!("{} is not a valid command.", input)),
