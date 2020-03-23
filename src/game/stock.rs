@@ -13,7 +13,7 @@ impl Stock {
     }
 }
 
-impl Pile<Card> for Stock {
+impl Pile for Stock {
     fn can_push(&self, card: &Card) -> bool {
         !card.is_open()
     }

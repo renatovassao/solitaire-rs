@@ -13,7 +13,7 @@ impl Tableau {
     }
 }
 
-impl Pile<Card> for Tableau {
+impl Pile for Tableau {
     fn can_push(&self, card: &Card) -> bool {
         if !card.is_open() {
             return false;

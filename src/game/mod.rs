@@ -6,18 +6,18 @@ mod foundation;
 mod waste;
 mod stock;
 
-use self::tableau::Tableau;
-use self::foundation::Foundation;
-use self::waste::Waste;
-use self::stock::Stock;
+use tableau::Tableau;
+use foundation::Foundation;
+use waste::Waste;
+use stock::Stock;
 
-trait Pile<T> {
-    fn can_push(&self, t: &T) -> bool;
-    fn push(&mut self, t: T) -> Option<T>;
-    fn pop(&mut self) -> Option<T>;
+trait Pile {
+    fn can_push(&self, t: &Card) -> bool;
+    fn push(&mut self, t: Card) -> Option<Card>;
+    fn pop(&mut self) -> Option<Card>;
     fn len(&self) -> usize;
-    fn last(&self) -> Option<&T>;
-    fn get(&self, i: usize) -> Option<&T>;
+    fn last(&self) -> Option<&Card>;
+    fn get(&self, i: usize) -> Option<&Card>;
 }
 
 const MAX_TABLEAU_SIZE: usize = 13;

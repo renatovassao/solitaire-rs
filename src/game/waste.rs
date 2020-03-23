@@ -13,7 +13,7 @@ impl Waste {
     }
 }
 
-impl Pile<Card> for Waste {
+impl Pile for Waste {
     fn can_push(&self, card: &Card) -> bool {
         card.is_open()
     }

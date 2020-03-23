@@ -15,7 +15,7 @@ impl Foundation {
     }
 }
 
-impl Pile<Card> for Foundation {
+impl Pile for Foundation {
     fn can_push(&self, card: &Card) -> bool {
         if !card.is_open() {
             return false;
