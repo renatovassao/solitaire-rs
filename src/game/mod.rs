@@ -364,6 +364,8 @@ impl fmt::Display for Game {
 
         write!(f, " \n\n").unwrap();
 
+        write!(f, " 1  2  3  4  5  6  7\n").unwrap();
+
         // tableaus
         for i in 0..14 {
             if self.tableau_1.len() < i && self.tableau_2.len() < i && self.tableau_3.len() < i && self.tableau_4.len() < i && self.tableau_5.len() < i && self.tableau_6.len() < i && self.tableau_6.len() < i {
