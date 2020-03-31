@@ -52,13 +52,13 @@ impl Game {
         let mut deck = Deck::new();
 
         Game {
-            tableau_1: Tableau::new(vec![deck.deal(true)]),
-            tableau_2: Tableau::new(vec![deck.deal(false), deck.deal(true)]),
-            tableau_3: Tableau::new(vec![deck.deal(false), deck.deal(false), deck.deal(true)]),
-            tableau_4: Tableau::new(vec![deck.deal(false), deck.deal(false), deck.deal(false), deck.deal(true)]),
-            tableau_5: Tableau::new(vec![deck.deal(false), deck.deal(false), deck.deal(false), deck.deal(false), deck.deal(true)]),
-            tableau_6: Tableau::new(vec![deck.deal(false), deck.deal(false), deck.deal(false), deck.deal(false), deck.deal(false), deck.deal(true)]),
-            tableau_7: Tableau::new(vec![deck.deal(false), deck.deal(false), deck.deal(false), deck.deal(false), deck.deal(false), deck.deal(false), deck.deal(true)]),
+            tableau_1: Tableau::new(vec![deck.deal(true).unwrap()]),
+            tableau_2: Tableau::new(vec![deck.deal(false).unwrap(), deck.deal(true).unwrap()]),
+            tableau_3: Tableau::new(vec![deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(true).unwrap()]),
+            tableau_4: Tableau::new(vec![deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(true).unwrap()]),
+            tableau_5: Tableau::new(vec![deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(true).unwrap()]),
+            tableau_6: Tableau::new(vec![deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(true).unwrap()]),
+            tableau_7: Tableau::new(vec![deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(false).unwrap(), deck.deal(true).unwrap()]),
 
             clubs_foundation: Foundation::new(Suit::Clubs),
             diamonds_foundation: Foundation::new(Suit::Diamonds),
@@ -367,7 +367,7 @@ impl fmt::Display for Game {
 
         // tableaus
         for i in 0..14 {
-            if self.tableau_1.len() < i && self.tableau_2.len() < i && self.tableau_3.len() < i && self.tableau_4.len() < i && self.tableau_5.len() < i && self.tableau_6.len() < i && self.tableau_6.len() < i {
+            if self.tableau_1.len() < i && self.tableau_2.len() < i && self.tableau_3.len() < i && self.tableau_4.len() < i && self.tableau_5.len() < i && self.tableau_6.len() < i && self.tableau_7.len() < i {
                 break;
             }
             write!(f, " ").unwrap();
